@@ -34,15 +34,15 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        println(motionManager.accelerometerAvailable) //print "true"
         
-        motionManager.deviceMotionUpdateInterval = 0.01
-        motionManager.startDeviceMotionUpdatesToQueue(NSOperationQueue.currentQueue(), withHandler:{
+        motionManager.accelerometerUpdateInterval = 0.01
+        motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue(), withHandler:{
             deviceManager, error in
-            println("Test") // no print
+            println("In") // no print
         })
         
-        println(motionManager.deviceMotionActive) // print false
-        
+        println(motionManager.accelerometerActive)
     }
     
     override func didReceiveMemoryWarning() {
