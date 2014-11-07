@@ -11,7 +11,6 @@ import CoreMotion
 
 class ViewController: UIViewController {
     
-    let motionManager: CMMotionManager = CMMotionManager()
     
     @IBOutlet var textWindow: UITextView!
     
@@ -29,20 +28,28 @@ class ViewController: UIViewController {
     let phones = ["iPhone5", "iPhone4", "Android"]
     
     
-    
+    lazy var motionManager = CMMotionManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        println(motionManager.accelerometerAvailable) //print "true"
         
-        motionManager.accelerometerUpdateInterval = 0.01
-        motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue(), withHandler:{
-            deviceManager, error in
-            println("In") // no print
-        })
+        if (motionManager.accelerometerAvailable){
+            
+            let queue = NSOperationQueue()
+            motionManager.startAccelerometerUpdatesToQueue(queue, withHandler:
+                {(data: CMAccelerometerData!, error: NSError!) in
+                    
+                    println("X = \(data.acceleration.x)")
+                    println("Y = \(data.acceleration.y)")
+                    println("Z = \(data.acceleration.z)")
+                    
+                }
+            )
+            
+            println(motionManager.accelerometerActive)
+        }
         
-        println(motionManager.accelerometerActive)
     }
     
     override func didReceiveMemoryWarning() {
