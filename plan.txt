@@ -1,9 +1,7 @@
 array{ -> for each user
-    array{ -> for each text
-        array{ -> char/time pairs
-            input(string) = character inputted, or backspace
-            time(double) = time of input
-        }
+    array{ -> char/time pairs. [-1.0, "NEXT"] indicates that user pressed NEXT
+        input(string) = character inputted, or backspace
+        time(double) = time of input
     }
 }
 
