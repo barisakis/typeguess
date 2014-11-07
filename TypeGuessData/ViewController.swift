@@ -30,24 +30,96 @@ class ViewController: UIViewController {
     
     lazy var motionManager = CMMotionManager()
     
+    
+    override func motionEnded(motion: UIEventSubtype,
+        withEvent event: UIEvent) {
+            
+            if motion == .MotionShake{
+                let controller = UIAlertController(title: "Shake",
+                    message: "The device is shaken",
+                    preferredStyle: .Alert)
+                
+                controller.addAction(UIAlertAction(title: "OK",
+                    style: .Default,
+                    handler: nil))
+                
+                presentViewController(controller, animated: true, completion: nil)
+                
+            }
+            
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        let queue = NSOperationQueue()
         
         if (motionManager.accelerometerAvailable){
+            println("accelerometer available")
             
-            let queue = NSOperationQueue()
+            motionManager.accelerometerUpdateInterval = 1.0 / 10.0
             motionManager.startAccelerometerUpdatesToQueue(queue, withHandler:
                 {(data: CMAccelerometerData!, error: NSError!) in
+                    var prev_z_a = 0.0;
                     
-                    println("X = \(data.acceleration.x)")
-                    println("Y = \(data.acceleration.y)")
-                    println("Z = \(data.acceleration.z)")
+                    var x_a = data.acceleration.x
+                    var y_a = data.acceleration.y
+                    var z_a = data.acceleration.z
                     
+                    if(prev_z_a < z_a){
+                        println("Z A +++")
+                    }else{
+                        println("z A ---")
+                    }
+                    
+                    if (z_a>0){
+                        println("UP")
+                    }else{
+                        println("DOWN")
+                    }
+                    
+                    println("Accelerometer X = \(x_a)")
+                    println("Accelerometer Y = \(y_a)")
+                    println("Accelerometer Z = \(z_a)")
+                    
+                    prev_z_a = z_a
                 }
             )
             
             println(motionManager.accelerometerActive)
+        }
+        
+        if (motionManager.gyroAvailable){
+            println("gyro available")
+            motionManager.gyroUpdateInterval = 1.0 / 10.0
+            
+            motionManager.startGyroUpdatesToQueue(queue,
+                withHandler: {(data: CMGyroData!, error: NSError!) in
+                    var prev_z_g = 0.0;
+                    
+                    var x_g = data.rotationRate.x
+                    var y_g = data.rotationRate.y
+                    var z_g = data.rotationRate.z
+                    
+                    if(prev_z_g < z_g){
+                        println("Z R +++")
+                    }else{
+                        println("z R ---")
+                    }
+                    
+                    if (z_g>0){
+                        println("Rotate UP")
+                    }else{
+                        println("Rotate Down")
+                    }
+                    
+                    println("Gyro X = \(x_g)")
+                    println("Gyro Y = \(y_g)")
+                    println("Gyro Z = \(z_g)")
+                    
+                    prev_z_g = z_g
+            })
+
         }
         
     }
