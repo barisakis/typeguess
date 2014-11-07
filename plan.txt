@@ -1,14 +1,16 @@
-array{
-    array{
-        input(string) = character inputted, or backspace
-        time(double) = time of input
+{
+    array{ -> for each user
+        array{ -> char/time pairs. [-1.0, "NEXT"] indicates that user pressed NEXT
+            input(string) = character inputted, or backspace
+            time(double) = time of input
+        }
     }
-}
 
-sex(boolean) = True if male
-age(int) = person's age
-height(double) = person's height in cm
-autocorrect(boolean) = 
-owniphone(string) 
-phone(string) = iphone4/5/6/6p androidsmall/med/large/phablet other
-email(string)
+    sex(boolean) = True if male
+    age(int) = person's age
+    height(double) = person's height in cm
+    autocorrect(boolean) = 
+    owniphone(string) 
+    phone(string) = iphone4/5/6/6p androidsmall/med/large/phablet other
+    email(string)
+}
