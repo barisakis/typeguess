@@ -11,6 +11,8 @@ import CoreMotion
 
 class ViewController: UIViewController {
     
+    let motionManager: CMMotionManager = CMMotionManager()
+    
     @IBOutlet var textWindow: UITextView!
     
     
@@ -32,6 +34,15 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        motionManager.deviceMotionUpdateInterval = 0.01
+        motionManager.startDeviceMotionUpdatesToQueue(NSOperationQueue.currentQueue(), withHandler:{
+            deviceManager, error in
+            println("Test") // no print
+        })
+        
+        println(motionManager.deviceMotionActive) // print false
+        
     }
     
     override func didReceiveMemoryWarning() {
