@@ -27,6 +27,8 @@ class ViewController: UIViewController {
     
     let phones = ["iPhone5", "iPhone4", "Android"]
     
+//    var sensorData = [][]
+    
     
     lazy var motionManager = CMMotionManager()
     
@@ -54,6 +56,8 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         let queue = NSOperationQueue()
         
+        var sensorInstance = [Double]()
+        
         if (motionManager.accelerometerAvailable){
             println("accelerometer available")
             
@@ -65,6 +69,10 @@ class ViewController: UIViewController {
                     var x_a = data.acceleration.x
                     var y_a = data.acceleration.y
                     var z_a = data.acceleration.z
+                    sensorInstance = []
+                    sensorInstance.insert(x_a, atIndex: 0)
+                    sensorInstance.insert(y_a, atIndex: 1)
+                    sensorInstance.insert(z_a, atIndex: 2)
                     
                     if(prev_z_a < z_a){
                         println("Z A +++")
@@ -101,6 +109,10 @@ class ViewController: UIViewController {
                     var y_g = data.rotationRate.y
                     var z_g = data.rotationRate.z
                     
+                    sensorInstance.insert(x_g, atIndex: 3)
+                    sensorInstance.insert(y_g, atIndex: 4)
+                    sensorInstance.insert(z_g, atIndex: 5)
+                    
                     if(prev_z_g < z_g){
                         println("Z R +++")
                     }else{
@@ -118,6 +130,8 @@ class ViewController: UIViewController {
                     println("Gyro Z = \(z_g)")
                     
                     prev_z_g = z_g
+                    
+                    println(sensorInstance)
             })
 
         }
