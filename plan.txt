@@ -1,7 +1,9 @@
-array{
-    array{
-        input(string) = character inputted, or backspace
-        time(double) = time of input
+array{ -> for each user
+    array{ -> for each text
+        array{ -> char/time pairs
+            input(string) = character inputted, or backspace
+            time(double) = time of input
+        }
     }
 }
 
