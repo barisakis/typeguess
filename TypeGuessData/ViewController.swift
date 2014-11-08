@@ -34,6 +34,7 @@ class ViewController: UIViewController {
     let gyroRate = 10.0;
     let accRate = 10.0;
     var keyPressIndices = Array<Array<Int>>()
+    var allKeysPressedArrayCombinedApp = Array<Array<Array<Array<Double>>>>()
     
     lazy var motionManager = CMMotionManager()
     
@@ -200,7 +201,6 @@ class ViewController: UIViewController {
        
         var allKeysPressedArrayCombinedPage = Array<Array<Array<Array<Double>>>>() //Main array with all perpage includes Next
     
-        
         for indexPair in keyPressIndices{
             //Aray for each key with both Accelerometer[0] and Gyro[1] arrays with instances
             var keyPressedArrayCombined = Array<Array<Array<Double>>>()
@@ -219,12 +219,15 @@ class ViewController: UIViewController {
             keyPressedArrayCombined.append(keyPressedArrayGyro)
             
             allKeysPressedArrayCombinedPage.append(keyPressedArrayCombined)
+            allKeysPressedArrayCombinedApp.append(keyPressedArrayCombined)
         }
         
         //CLEAR the sensor arrays
         sensorArrayAccelerometer = Array<Array<Double>>()
         sensorArrayGyro = Array<Array<Double>>()
         
+        println(allKeysPressedArrayCombinedPage)
+        println(allKeysPressedArrayCombinedApp)
         
         ///////
         
