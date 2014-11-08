@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreMotion
+import Foundation
 
 class ViewController: UIViewController {
     
@@ -27,8 +28,12 @@ class ViewController: UIViewController {
     
     let phones = ["iPhone5", "iPhone4", "Android"]
     
-//    var sensorData = [][]
-    
+    //NEW Variables
+    var sensorArrayAccelerometer = Array<Array<Double>>()
+    var sensorArrayGyro = Array<Array<Double>>()
+    let gyroRate = 10.0;
+    let accRate = 10.0;
+    var keyPressIndices = Array<Array<Int>>()
     
     lazy var motionManager = CMMotionManager()
     
@@ -56,12 +61,13 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
         let queue = NSOperationQueue()
         
-        var sensorInstance = [Double]()
+        var sensorInstanceAccelerometer = [Double]()
+        var sensorInstanceGyro = [Double]()
         
         if (motionManager.accelerometerAvailable){
             println("accelerometer available")
             
-            motionManager.accelerometerUpdateInterval = 1.0 / 10.0
+            motionManager.accelerometerUpdateInterval = 1.0/accRate
             motionManager.startAccelerometerUpdatesToQueue(queue, withHandler:
                 {(data: CMAccelerometerData!, error: NSError!) in
                     var prev_z_a = 0.0;
@@ -69,11 +75,11 @@ class ViewController: UIViewController {
                     var x_a = data.acceleration.x
                     var y_a = data.acceleration.y
                     var z_a = data.acceleration.z
-                    sensorInstance = []
-                    sensorInstance.insert(x_a, atIndex: 0)
-                    sensorInstance.insert(y_a, atIndex: 1)
-                    sensorInstance.insert(z_a, atIndex: 2)
-                    
+                    sensorInstanceAccelerometer = []
+                    sensorInstanceAccelerometer.insert(x_a, atIndex: 0)
+                    sensorInstanceAccelerometer.insert(y_a, atIndex: 1)
+                    sensorInstanceAccelerometer.insert(z_a, atIndex: 2)
+                    self.sensorArrayAccelerometer.append(sensorInstanceAccelerometer)
                     if(prev_z_a < z_a){
                         println("Z A +++")
                     }else{
@@ -86,9 +92,9 @@ class ViewController: UIViewController {
                         println("DOWN")
                     }
                     
-                    println("Accelerometer X = \(x_a)")
-                    println("Accelerometer Y = \(y_a)")
-                    println("Accelerometer Z = \(z_a)")
+//                    println("Accelerometer X = \(x_a)")
+//                    println("Accelerometer Y = \(y_a)")
+//                    println("Accelerometer Z = \(z_a)")
                     
                     prev_z_a = z_a
                 }
@@ -99,7 +105,7 @@ class ViewController: UIViewController {
         
         if (motionManager.gyroAvailable){
             println("gyro available")
-            motionManager.gyroUpdateInterval = 1.0 / 10.0
+            motionManager.gyroUpdateInterval = 1.0 / gyroRate
             
             motionManager.startGyroUpdatesToQueue(queue,
                 withHandler: {(data: CMGyroData!, error: NSError!) in
@@ -108,10 +114,11 @@ class ViewController: UIViewController {
                     var x_g = data.rotationRate.x
                     var y_g = data.rotationRate.y
                     var z_g = data.rotationRate.z
-                    
-                    sensorInstance.insert(x_g, atIndex: 3)
-                    sensorInstance.insert(y_g, atIndex: 4)
-                    sensorInstance.insert(z_g, atIndex: 5)
+                    sensorInstanceGyro = []
+                    sensorInstanceGyro.insert(x_g, atIndex: 0)
+                    sensorInstanceGyro.insert(y_g, atIndex: 1)
+                    sensorInstanceGyro.insert(z_g, atIndex: 2)
+                    self.sensorArrayGyro.append(sensorInstanceGyro)
                     
                     if(prev_z_g < z_g){
                         println("Z R +++")
@@ -125,13 +132,12 @@ class ViewController: UIViewController {
                         println("Rotate Down")
                     }
                     
-                    println("Gyro X = \(x_g)")
-                    println("Gyro Y = \(y_g)")
-                    println("Gyro Z = \(z_g)")
+//                    println("Gyro X = \(x_g)")
+//                    println("Gyro Y = \(y_g)")
+//                    println("Gyro Z = \(z_g)")
                     
                     prev_z_g = z_g
                     
-                    println(sensorInstance)
             })
 
         }
@@ -146,6 +152,7 @@ class ViewController: UIViewController {
     
 
     @IBAction func getinput(sender: AnyObject) {
+        
         var time = NSDate.timeIntervalSinceReferenceDate()
         
         var inputfieldlength2 = countElements(inputfieldvalue.text)
@@ -163,9 +170,65 @@ class ViewController: UIViewController {
         times.append(time)
         println(characters)
         println(times)
-
+        
+        //BARIS EDITS
+        
+        var keyPressedIndex = [Int]();
+        
+        //Function to get the index of the array for gyro and accelerometer instance at the click
+        var accelerometerIndex = sensorArrayAccelerometer.count
+        var gyroIndex = sensorArrayGyro.count
+        
+        keyPressedIndex.append(accelerometerIndex)
+        keyPressedIndex.append(gyroIndex)
+        
+        keyPressIndices.append(keyPressedIndex)
     }
     @IBAction func changetext3(sender: AnyObject) {
+
+        //BARIS EDITS
+    
+        var nextPressedIndex = [Int]();
+        //Function to get the index of the array for gyro and accelerometer instance at the click
+        var accelerometerIndex = sensorArrayAccelerometer.count
+        var gyroIndex = sensorArrayGyro.count
+        nextPressedIndex.append(accelerometerIndex)
+        nextPressedIndex.append(gyroIndex)
+        keyPressIndices.append(nextPressedIndex)
+        
+        sleep(1)
+       
+        var allKeysPressedArrayCombinedPage = Array<Array<Array<Array<Double>>>>() //Main array with all perpage includes Next
+    
+        
+        for indexPair in keyPressIndices{
+            //Aray for each key with both Accelerometer[0] and Gyro[1] arrays with instances
+            var keyPressedArrayCombined = Array<Array<Array<Double>>>()
+            
+            var keyPressedArrayAccelerometer = Array<Array<Double>>()
+            var keyPressedArrayGyro = Array<Array<Double>>()
+            
+            for var a_index = indexPair[0]-10; a_index < indexPair[0]+10; ++a_index {
+                keyPressedArrayAccelerometer.append(sensorArrayAccelerometer[a_index])
+            }
+            keyPressedArrayCombined.append(keyPressedArrayAccelerometer)
+            
+            for var g_index = indexPair[1]-10; g_index < indexPair[1]+10; ++g_index {
+                keyPressedArrayGyro.append(sensorArrayGyro[g_index])
+            }
+            keyPressedArrayCombined.append(keyPressedArrayGyro)
+            
+            allKeysPressedArrayCombinedPage.append(keyPressedArrayCombined)
+        }
+        
+        //CLEAR the sensor arrays
+        sensorArrayAccelerometer = Array<Array<Double>>()
+        sensorArrayGyro = Array<Array<Double>>()
+        
+        
+        ///////
+        
+        
         var inputfieldlength = countElements(inputfieldvalue.text)
         if inputfieldlength > 0 && curr_text < countElements(texts){
             textWindow.text = texts[curr_text]
