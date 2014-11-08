@@ -6,12 +6,11 @@
         }
     }
 
-    sex(boolean) = True if male
+    gender(boolean) = True if male
     age(int) = person's age
-    height(double) = person's height in cm
-    autocorrect(boolean) = 
-    owniphone(string) 
     phone(string) = iphone4/5/6/6p androidsmall/med/large/phablet other
+    num_thumbs
+    autocorrect
     email(string)
 }
 
