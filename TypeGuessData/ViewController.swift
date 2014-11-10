@@ -35,6 +35,10 @@ class ViewController: UIViewController {
     let accRate = 40.0;
     var keyPressIndices = Array<Array<Int>>()
     var allKeysPressedArrayCombinedApp = Array<Array<Array<Array<Double>>>>()
+    var sensorCounter = 0;
+    var indexAppendCounter = 0;
+    
+    var isLastDone = false
     
     lazy var motionManager = CMMotionManager()
     
@@ -109,70 +113,79 @@ class ViewController: UIViewController {
         if curr_text <= countElements(texts) && curr_question == 0{
             characters.append(character)
             times.append(time)
-        }
-        
-        //BARIS EDITS
-        
-        var keyPressedIndex = [Int]();
-        
-        //Function to get the index of the array for gyro and accelerometer instance at the click
-        var accelerometerIndex = sensorArrayAccelerometer.count
-        var gyroIndex = sensorArrayGyro.count
-        
-        keyPressedIndex.append(accelerometerIndex)
-        keyPressedIndex.append(gyroIndex)
-        
-        keyPressIndices.append(keyPressedIndex)
-    }
-    
-    @IBAction func getinput(sender: AnyObject) {
-        var time = NSDate.timeIntervalSinceReferenceDate()
-        
-        var inputfieldlength2 = countElements(inputfieldvalue.text)
-        var character = ""
-        
-        if inputfieldlength2<inputfieldlength {
-            character = "BACKSPACE"
-        }else{
-            character = inputfieldvalue.text.substringFromIndex(inputfieldvalue.text.endIndex.predecessor())
-        }
-        inputfieldlength = inputfieldlength2
-        
-        if curr_text <= countElements(texts) && curr_question == 0{
-            characters.append(character)
-            times.append(time)
-        }
-        
-        
-        //characters.append(character)
-        //times.append(time)
-        //println(characters)
-        //println(times)
-        
-        //BARIS EDITS
-        var keyPressedIndex = [Int]();
-        //Function to get the index of the array for gyro and accelerometer instance at the click
-        var accelerometerIndex = sensorArrayAccelerometer.count
-        var gyroIndex = sensorArrayGyro.count
-        keyPressedIndex.append(accelerometerIndex)
-        keyPressedIndex.append(gyroIndex)
-        keyPressIndices.append(keyPressedIndex)
-    }
-    
-    @IBAction func click_next(sender: UIButton) {
-        var inputfieldlength3 = countElements(inputfieldvalue.text)
-        if inputfieldlength3 > 0 && curr_text < countElements(texts){
-            
             
             //BARIS EDITS
             
-            var nextPressedIndex = [Int]();
+            var keyPressedIndex = [Int]();
+            
             //Function to get the index of the array for gyro and accelerometer instance at the click
             var accelerometerIndex = sensorArrayAccelerometer.count
             var gyroIndex = sensorArrayGyro.count
-            nextPressedIndex.append(accelerometerIndex)
-            nextPressedIndex.append(gyroIndex)
-            keyPressIndices.append(nextPressedIndex)
+            
+            keyPressedIndex.append(accelerometerIndex)
+            keyPressedIndex.append(gyroIndex)
+            sensorCounter++;
+            keyPressIndices.append(keyPressedIndex)
+        }
+        
+        
+    }
+    
+//    @IBAction func getinput(sender: AnyObject) {
+//        var time = NSDate.timeIntervalSinceReferenceDate()
+//        
+//        var inputfieldlength2 = countElements(inputfieldvalue.text)
+//        var character = ""
+//        
+//        if inputfieldlength2<inputfieldlength {
+//            character = "BACKSPACE"
+//        }else{
+//            character = inputfieldvalue.text.substringFromIndex(inputfieldvalue.text.endIndex.predecessor())
+//        }
+//        inputfieldlength = inputfieldlength2
+//        
+//        if curr_text <= countElements(texts) && curr_question == 0{
+//            characters.append(character)
+//            times.append(time)
+//        }
+//        
+//        
+//        //characters.append(character)
+//        //times.append(time)
+//        //println(characters)
+//        //println(times)
+//        
+//        //BARIS EDITS
+//        var keyPressedIndex = [Int]();
+//        //Function to get the index of the array for gyro and accelerometer instance at the click
+//        var accelerometerIndex = sensorArrayAccelerometer.count
+//        var gyroIndex = sensorArrayGyro.count
+//        keyPressedIndex.append(accelerometerIndex)
+//        keyPressedIndex.append(gyroIndex)
+//        keyPressIndices.append(keyPressedIndex)
+//    }
+    
+    @IBAction func click_next(sender: UIButton) {
+        var inputfieldlength3 = countElements(inputfieldvalue.text)
+        if inputfieldlength3 > 0 && curr_text <= countElements(texts) && !isLastDone{
+            if (curr_text == countElements(texts)){
+                isLastDone = true
+            }
+            
+            //BARIS EDITS
+            println("INDEXING STARTING!!!!!!!!!!!!!!!!!!!!")
+            if (!isLastDone){
+                //Function to get the index of the array for gyro and accelerometer instance at the click
+                var nextPressedIndex = [Int]();
+                var accelerometerIndex = sensorArrayAccelerometer.count
+                var gyroIndex = sensorArrayGyro.count
+                nextPressedIndex.append(accelerometerIndex)
+                nextPressedIndex.append(gyroIndex)
+                keyPressIndices.append(nextPressedIndex)
+                sensorCounter++;
+            }
+
+
             
             sleep(1)
             
@@ -206,6 +219,7 @@ class ViewController: UIViewController {
                 
                 allKeysPressedArrayCombinedPage.append(keyPressedArrayCombined)
                 allKeysPressedArrayCombinedApp.append(keyPressedArrayCombined)
+                indexAppendCounter++;
                 println("key added")
             }
             
@@ -213,7 +227,66 @@ class ViewController: UIViewController {
             sensorArrayAccelerometer = Array<Array<Double>>()
             sensorArrayGyro = Array<Array<Double>>()
             keyPressIndices = Array<Array<Int>>()
+        
+        }
+        
+        
+        
+        if inputfieldlength3 > 0 && curr_text < countElements(texts){
             
+            
+//            //BARIS EDITS
+//            
+//            var nextPressedIndex = [Int]();
+//            //Function to get the index of the array for gyro and accelerometer instance at the click
+//            var accelerometerIndex = sensorArrayAccelerometer.count
+//            var gyroIndex = sensorArrayGyro.count
+//            nextPressedIndex.append(accelerometerIndex)
+//            nextPressedIndex.append(gyroIndex)
+//            keyPressIndices.append(nextPressedIndex)
+//            sensorCounter++;
+//            
+//            sleep(1)
+//            
+//            var allKeysPressedArrayCombinedPage = Array<Array<Array<Array<Double>>>>() //Main array with all perpage includes Next
+//            
+//            for indexPair in keyPressIndices{
+//                //Aray for each key with both Accelerometer[0] and Gyro[1] arrays with instances
+//                var keyPressedArrayCombined = Array<Array<Array<Double>>>()
+//                
+//                var keyPressedArrayAccelerometer = Array<Array<Double>>()
+//                var keyPressedArrayGyro = Array<Array<Double>>()
+//                
+//                var acc_index = indexPair[0]
+//                var gyro_index = indexPair[1]
+//                
+//                if (indexPair[0] < 10){
+//                    acc_index = 10
+//                }
+//                if (indexPair[1] < 10){
+//                    gyro_index = 10
+//                }
+//                for var a_index = acc_index-10; a_index < acc_index+10; ++a_index {
+//                    keyPressedArrayAccelerometer.append(sensorArrayAccelerometer[a_index])
+//                }
+//                keyPressedArrayCombined.append(keyPressedArrayAccelerometer)
+//                
+//                for var g_index = gyro_index-10; g_index < gyro_index+10; ++g_index {
+//                    keyPressedArrayGyro.append(sensorArrayGyro[g_index])
+//                }
+//                keyPressedArrayCombined.append(keyPressedArrayGyro)
+//                
+//                allKeysPressedArrayCombinedPage.append(keyPressedArrayCombined)
+//                allKeysPressedArrayCombinedApp.append(keyPressedArrayCombined)
+//                indexAppendCounter++;
+//                println("key added")
+//            }
+//            
+//            //CLEAR the sensor arrays
+//            sensorArrayAccelerometer = Array<Array<Double>>()
+//            sensorArrayGyro = Array<Array<Double>>()
+//            keyPressIndices = Array<Array<Int>>()
+//            
             
             textWindow.text = texts[curr_text]
             characters.append("NEXT")
@@ -235,9 +308,14 @@ class ViewController: UIViewController {
                 
                 answers.append(inputfieldvalue.text)
                 
-                //println("ACC KEY COUNT: " + String(allKeysPressedArrayCombinedApp.count))
-                //println("TIMES KEY COUNT: " + String(times.count))
-                //println("KEY COUNT: " + String(characters.count))
+                println("ACC KEY COUNT: " + String(allKeysPressedArrayCombinedApp.count))
+                println("SensorCounter:\(sensorCounter)")
+                println("index appends:\(indexAppendCounter)")
+                println("TIMES KEY COUNT: " + String(times.count))
+                println("KEY COUNT: " + String(characters.count))
+                
+                
+                
                 
                 var acc_all_keys_results = "["
                 for i1 in 0...allKeysPressedArrayCombinedApp.count - 1{
@@ -285,13 +363,13 @@ class ViewController: UIViewController {
                 //println("ALL GYRO RESULTS: " + gyro_all_keys_results)
                 
                 // create some JSON data and configure the request
-                var keys_pressed = "[[" + NSString(format: "%.2f", times[0]) + ",\"" + characters[0] + "\"]"
+                var keys_pressed = "[[" + NSString(format: "%.5f", times[0]) + ",\"" + characters[0] + "\"]"
                 //println("Starting to print elements")
                 
                 //println("Finished to print elements")
                 
                 for i in 1...times.count - 1 {
-                    keys_pressed += ",[" + NSString(format: "%.2f", times[i]) + ",\"" + characters[i] + "\"]"
+                    keys_pressed += ",[" + NSString(format: "%.5f", times[i]) + ",\"" + characters[i] + "\"]"
                 }
                 keys_pressed += "]"
                 
@@ -322,7 +400,7 @@ class ViewController: UIViewController {
                 // send the request
                 NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
                 println("REQUEST SENT!!!!!!!!!!!!!!!!!")
-                exit(0)
+                //exit(0)
                 
                 
                 
