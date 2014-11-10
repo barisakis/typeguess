@@ -62,22 +62,6 @@ class ViewController: UIViewController {
                     sensorInstanceAccelerometer.insert(y_a, atIndex: 1)
                     sensorInstanceAccelerometer.insert(z_a, atIndex: 2)
                     self.sensorArrayAccelerometer.append(sensorInstanceAccelerometer)
-                    //                    if(prev_z_a < z_a){
-                    //                        println("Z A +++")
-                    //                    }else{
-                    //                        println("z A ---")
-                    //                    }
-                    //
-                    //                    if (z_a>0){
-                    //                        println("UP")
-                    //                    }else{
-                    //                        println("DOWN")
-                    //                    }
-                    
-                    //                    println("Accelerometer X = \(x_a)")
-                    //                    println("Accelerometer Y = \(y_a)")
-                    //                    println("Accelerometer Z = \(z_a)")
-                    
                     prev_z_a = z_a
                 }
             )
@@ -100,23 +84,6 @@ class ViewController: UIViewController {
                     sensorInstanceGyro.insert(y_g, atIndex: 1)
                     sensorInstanceGyro.insert(z_g, atIndex: 2)
                     self.sensorArrayGyro.append(sensorInstanceGyro)
-                    
-                    //                    if(prev_z_g < z_g){
-                    //                        println("Z R +++")
-                    //                    }else{
-                    //                        println("z R ---")
-                    //                    }
-                    //
-                    //                    if (z_g>0){
-                    //                        println("Rotate UP")
-                    //                    }else{
-                    //                        println("Rotate Down")
-                    //                    }
-                    
-                    //                    println("Gyro X = \(x_g)")
-                    //                    println("Gyro Y = \(y_g)")
-                    //                    println("Gyro Z = \(z_g)")
-                    
                     prev_z_g = z_g
                     
             })
@@ -133,9 +100,6 @@ class ViewController: UIViewController {
         var character = ""
         
         if inputfieldlength2<inputfieldlength {
-            //println("INPUT LENGTH1: " + String(inputfieldlength))
-            //println("INPUT LENGTH2: " + String(inputfieldlength2))
-            //println("CHAR: " + inputfieldvalue.text)
             character = "BACKSPACE"
         }else{
             character = inputfieldvalue.text.substringFromIndex(inputfieldvalue.text.endIndex.predecessor())
@@ -146,8 +110,6 @@ class ViewController: UIViewController {
             characters.append(character)
             times.append(time)
         }
-        //println(characters)
-        //println(times)
         
         //BARIS EDITS
         
@@ -161,8 +123,6 @@ class ViewController: UIViewController {
         keyPressedIndex.append(gyroIndex)
         
         keyPressIndices.append(keyPressedIndex)
-        //println("key pressed added")
-        //println(keyPressIndices)
     }
     
     @IBAction func getinput(sender: AnyObject) {
@@ -172,9 +132,6 @@ class ViewController: UIViewController {
         var character = ""
         
         if inputfieldlength2<inputfieldlength {
-            //println("INPUT LENGTH1: " + String(inputfieldlength))
-            //println("INPUT LENGTH2: " + String(inputfieldlength2))
-            //println("CHAR: " + inputfieldvalue.text)
             character = "BACKSPACE"
         }else{
             character = inputfieldvalue.text.substringFromIndex(inputfieldvalue.text.endIndex.predecessor())
@@ -228,8 +185,6 @@ class ViewController: UIViewController {
                 var keyPressedArrayAccelerometer = Array<Array<Double>>()
                 var keyPressedArrayGyro = Array<Array<Double>>()
                 
-                //println("index move")
-                //println(keyPressIndices)
                 var acc_index = indexPair[0]
                 var gyro_index = indexPair[1]
                 
@@ -259,12 +214,6 @@ class ViewController: UIViewController {
             sensorArrayGyro = Array<Array<Double>>()
             keyPressIndices = Array<Array<Int>>()
             
-            //println(allKeysPressedArrayCombinedPage)
-            //println(allKeysPressedArrayCombinedApp)
-            
-            ///////
-            
-            
             
             textWindow.text = texts[curr_text]
             characters.append("NEXT")
@@ -283,27 +232,63 @@ class ViewController: UIViewController {
         }
         else if curr_text == countElements(texts)
             && curr_question >= countElements(questions){
+                
                 answers.append(inputfieldvalue.text)
                 
+                //println("ACC KEY COUNT: " + String(allKeysPressedArrayCombinedApp.count))
+                //println("TIMES KEY COUNT: " + String(times.count))
+                //println("KEY COUNT: " + String(characters.count))
                 
-                println("last loo[ place")
+                var acc_all_keys_results = "["
+                for i1 in 0...allKeysPressedArrayCombinedApp.count - 1{
+                    var k = allKeysPressedArrayCombinedApp[i1]
+                    var k_accs = k[0]
+                    var key_accs = "["
+                    for i2 in 0...k_accs.count - 1{
+                        var time_point = k_accs[i2]
+                        var acc_str_at_point = "["+NSString(format: "%.5f", time_point[0])
+                        for i3 in 1...time_point.count - 1{
+                            var acc_at_point = time_point[i3]
+                            acc_str_at_point += ","+NSString(format: "%.5f", time_point[i3])
+                        }
+                        acc_str_at_point += "]"
+                        key_accs += acc_str_at_point
+                        
+                    }
+                    key_accs += "]"
+                    acc_all_keys_results += key_accs
+                }
+                acc_all_keys_results += "]"
+               // println("ALL KEYS RESULTS: " + acc_all_keys_results)
+                
+                
+                var gyro_all_keys_results = "["
+                for i1 in 0...allKeysPressedArrayCombinedApp.count - 1{
+                    var k = allKeysPressedArrayCombinedApp[i1]
+                    var k_gyro = k[1]
+                    var key_gyros = "["
+                    for i2 in 0...k_gyro.count - 1{
+                        var time_point = k_gyro[i2]
+                        var gyro_str_at_point = "["+NSString(format: "%.5f", time_point[0])
+                        for i3 in 1...time_point.count - 1{
+                            var gy_at_point = time_point[i3]
+                            gyro_str_at_point += ","+NSString(format: "%.5f", time_point[i3])
+                        }
+                        gyro_str_at_point += "]"
+                        key_gyros += gyro_str_at_point
+                        
+                    }
+                    key_gyros += "]"
+                    gyro_all_keys_results += key_gyros
+                }
+                gyro_all_keys_results += "]"
+                //println("ALL GYRO RESULTS: " + gyro_all_keys_results)
                 
                 // create some JSON data and configure the request
                 var keys_pressed = "[[" + NSString(format: "%.2f", times[0]) + ",\"" + characters[0] + "\"]"
-                println("Starting to print elements")
+                //println("Starting to print elements")
                 
-                //                for i1 in 1...allKeysPressedArrayCombinedApp.count - 1{
-                //                    for i2 in 1...allKeysPressedArrayCombinedApp[i1].count - 1{
-                //                        for i3 in 1...allKeysPressedArrayCombinedApp[i1][i2].count - 1{
-                //                            println("level3")
-                //                            for i4 in 1...allKeysPressedArrayCombinedApp[i1][i2][i3].count - 1{
-                //                               println(allKeysPressedArrayCombinedApp[i1][i2][i3][i4])
-                //                            }
-                //                        }
-                //                    }
-                //                }
-                
-                println("Finished to print elements")
+                //println("Finished to print elements")
                 
                 for i in 1...times.count - 1 {
                     keys_pressed += ",[" + NSString(format: "%.2f", times[i]) + ",\"" + characters[i] + "\"]"
@@ -318,10 +303,12 @@ class ViewController: UIViewController {
                 json_str += "\"size_if_android\": \"" + answers[3] + "\","
                 json_str += "\"num_thumbs\": \"" + answers[4] + "\","
                 json_str += "\"autocorrect\": \"" + answers[5] + "\","
+                json_str += "\"accelerations\": \"" + acc_all_keys_results + "\","
+                json_str += "\"gyros\": \"" + gyro_all_keys_results + "\","
                 json_str += "\"email\": \"" + answers[6] + "\"}"
                 
                 
-                //println("JSON: " + json_str)
+                println("JSON: " + json_str)
                 
                 //create the request & response
                 var request = NSMutableURLRequest(URL: NSURL(string: "http://fractos.stanford.edu/submit")!, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 5)
@@ -336,6 +323,8 @@ class ViewController: UIViewController {
                 NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
                 println("REQUEST SENT!!!!!!!!!!!!!!!!!")
                 exit(0)
+                
+                
                 
         }
         
