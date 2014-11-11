@@ -24,8 +24,8 @@ class ViewController: UIViewController {
     var times = [Double]()
     var curr_text = 0
     var curr_question = 0
-    let questions = ["Male or female? Type (m/f)", "What is your age?", "Which phone do you regularly use? (iPhone4, iPhone5, iPhone6, iPhone6plus, Android, or Windows, etc.)", "Is your own phone bigger/smaller than iPhone6? Type (b/s)", "Do you use one or two fingers? Type (1/2)", "Do you usually use autocorrect on your phone? Type (y/n)", "Is English your mother tongue? (y/n)", "Do you want to receive our final product? Please give us your email Don't worry, we won't spam you."]
-    let texts = ["the quick brown fox jumped over the lazy dog", "the Queen's argument was, that if something wasn't done about it in less than no time the Queen would have everybody executed.", "short bacon loin strip steak porchetta shankle drumstick rump"]
+    let questions = ["Congrats! You got a score of \(80 + Int(arc4random_uniform(20)))!!\n\n We would like to ask you a few questions, what's your gender? Type (m/f)", "What is your age?", "Do you use one or two fingers? Type (1/2)", "Which phone do you regularly use? (iPhone4, iPhone5, iPhone6, iPhone6plus, Android, or Windows, etc.)", "Is your own phone bigger/smaller/same than iPhone6? Type (b/s)", "Do you usually use autocorrect on your phone? Type (y/n)", "Is English your mother tongue? (y/n)", "If you want to receive our final product for free, please give us your email. Don't worry, we won't spam you."]
+    let texts = ["the quick brown fox jumped over the lazy dog", "If something wasn't done about it in less than no time the Queen would have everybody executed.", "short bacon loin strip steak porchetta shankle drumstick rump"]
     
     let phones = ["iPhone5", "iPhone4", "Android"]
     
@@ -275,13 +275,14 @@ class ViewController: UIViewController {
                 json_str += "\"keys\": " + keys_pressed + ",\n"
                 json_str += "\"gender\": \"" + answers[0] + "\","
                 json_str += "\"age\": \"" + answers[1] + "\","
-                json_str += "\"phone\": \"" + answers[2] + "\","
-                json_str += "\"size_if_android\": \"" + answers[3] + "\","
-                json_str += "\"num_thumbs\": \"" + answers[4] + "\","
+                json_str += "\"num_thumbs\": \"" + answers[2] + "\","
+                json_str += "\"phone\": \"" + answers[3] + "\","
+                json_str += "\"size_phone\": \"" + answers[4] + "\","
                 json_str += "\"autocorrect\": \"" + answers[5] + "\","
+                json_str += "\"mothertongue\": \"" + answers[6] + "\","
                 json_str += "\"accelerations\": \"" + acc_all_keys_results + "\","
                 json_str += "\"gyros\": \"" + gyro_all_keys_results + "\","
-                json_str += "\"email\": \"" + answers[6] + "\"}"
+                json_str += "\"email\": \"" + answers[7] + "\"}"
                 
                 
                 println("JSON: " + json_str)
