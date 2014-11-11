@@ -13,16 +13,19 @@ import Darwin
 
 class ViewController: UIViewController {
     
+    
     @IBOutlet var textWindow: UITextView!
+    
     @IBOutlet var inputfieldvalue: UITextField!
+    
     
     var inputfieldlength: Int = 0
     var characters = [String]()
     var times = [Double]()
     var curr_text = 0
     var curr_question = 0
-    let questions = ["Male or female? Type (m/f)", "What is your age?", "Which phone do you use? Type iPhone4, iPhone5, iPhone6, iPhone6p, Android, or Windows", "If you use an Android or Windows, is it bigger/smaller than iPhone6?", "Do you use one or two thumbs? Type (1 or 2)", "Do you usually use autocorrect on your phone? Type (y/n)", "Do you want to be part of our Beta release "]
-    let texts = ["the quick brown fox jumped over the lazy dog", "the Queen's argument was, that if Something wasn't done about it in less than no time she'd have everybody executed, all round.", "short loin strip steak porchetta shankle turducken turkey drumstick venison pork loin ham boudin porchetta rump"]
+    let questions = ["Male or female? Type (m/f)", "What is your age?", "Which phone do you regularly use? (iPhone4, iPhone5, iPhone6, iPhone6plus, Android, or Windows, etc.)", "Is your own phone bigger/smaller than iPhone6? Type (b/s)", "Do you use one or two fingers? Type (1/2)", "Do you usually use autocorrect on your phone? Type (y/n)", "Is English your mother tongue? (y/n)", "Do you want to receive our final product? Please give us your email Don't worry, we won't spam you."]
+    let texts = ["the quick brown fox jumped over the lazy dog", "the Queen's argument was, that if something wasn't done about it in less than no time the Queen would have everybody executed.", "short bacon loin strip steak porchetta shankle drumstick rump"]
     
     let phones = ["iPhone5", "iPhone4", "Android"]
     
@@ -56,17 +59,11 @@ class ViewController: UIViewController {
             motionManager.accelerometerUpdateInterval = 1.0/accRate
             motionManager.startAccelerometerUpdatesToQueue(queue, withHandler:
                 {(data: CMAccelerometerData!, error: NSError!) in
-                    var prev_z_a = 0.0;
-                    
-                    var x_a = data.acceleration.x
-                    var y_a = data.acceleration.y
-                    var z_a = data.acceleration.z
                     sensorInstanceAccelerometer = []
-                    sensorInstanceAccelerometer.insert(x_a, atIndex: 0)
-                    sensorInstanceAccelerometer.insert(y_a, atIndex: 1)
-                    sensorInstanceAccelerometer.insert(z_a, atIndex: 2)
+                    sensorInstanceAccelerometer.append(data.acceleration.x)
+                    sensorInstanceAccelerometer.append(data.acceleration.y)
+                    sensorInstanceAccelerometer.append(data.acceleration.z)
                     self.sensorArrayAccelerometer.append(sensorInstanceAccelerometer)
-                    prev_z_a = z_a
                 }
             )
             
@@ -78,17 +75,11 @@ class ViewController: UIViewController {
             
             motionManager.startGyroUpdatesToQueue(queue,
                 withHandler: {(data: CMGyroData!, error: NSError!) in
-                    var prev_z_g = 0.0;
-                    
-                    var x_g = data.rotationRate.x
-                    var y_g = data.rotationRate.y
-                    var z_g = data.rotationRate.z
                     sensorInstanceGyro = []
-                    sensorInstanceGyro.insert(x_g, atIndex: 0)
-                    sensorInstanceGyro.insert(y_g, atIndex: 1)
-                    sensorInstanceGyro.insert(z_g, atIndex: 2)
+                    sensorInstanceGyro.append(data.rotationRate.x)
+                    sensorInstanceGyro.append(data.rotationRate.y)
+                    sensorInstanceGyro.append(data.rotationRate.z)
                     self.sensorArrayGyro.append(sensorInstanceGyro)
-                    prev_z_g = z_g
                     
             })
             
@@ -130,41 +121,7 @@ class ViewController: UIViewController {
         
         
     }
-    
-//    @IBAction func getinput(sender: AnyObject) {
-//        var time = NSDate.timeIntervalSinceReferenceDate()
-//        
-//        var inputfieldlength2 = countElements(inputfieldvalue.text)
-//        var character = ""
-//        
-//        if inputfieldlength2<inputfieldlength {
-//            character = "BACKSPACE"
-//        }else{
-//            character = inputfieldvalue.text.substringFromIndex(inputfieldvalue.text.endIndex.predecessor())
-//        }
-//        inputfieldlength = inputfieldlength2
-//        
-//        if curr_text <= countElements(texts) && curr_question == 0{
-//            characters.append(character)
-//            times.append(time)
-//        }
-//        
-//        
-//        //characters.append(character)
-//        //times.append(time)
-//        //println(characters)
-//        //println(times)
-//        
-//        //BARIS EDITS
-//        var keyPressedIndex = [Int]();
-//        //Function to get the index of the array for gyro and accelerometer instance at the click
-//        var accelerometerIndex = sensorArrayAccelerometer.count
-//        var gyroIndex = sensorArrayGyro.count
-//        keyPressedIndex.append(accelerometerIndex)
-//        keyPressedIndex.append(gyroIndex)
-//        keyPressIndices.append(keyPressedIndex)
-//    }
-    
+
     @IBAction func click_next(sender: UIButton) {
         var inputfieldlength3 = countElements(inputfieldvalue.text)
         if inputfieldlength3 > 0 && curr_text <= countElements(texts) && !isLastDone{
@@ -184,12 +141,8 @@ class ViewController: UIViewController {
                 keyPressIndices.append(nextPressedIndex)
                 sensorCounter++;
             }
-
-
-            
             sleep(1)
-            
-            var allKeysPressedArrayCombinedPage = Array<Array<Array<Array<Double>>>>() //Main array with all perpage includes Next
+            //var allKeysPressedArrayCombinedPage = Array<Array<Array<Array<Double>>>>() //Main array with all perpage includes Next
             
             for indexPair in keyPressIndices{
                 //Aray for each key with both Accelerometer[0] and Gyro[1] arrays with instances
@@ -217,7 +170,7 @@ class ViewController: UIViewController {
                 }
                 keyPressedArrayCombined.append(keyPressedArrayGyro)
                 
-                allKeysPressedArrayCombinedPage.append(keyPressedArrayCombined)
+                //allKeysPressedArrayCombinedPage.append(keyPressedArrayCombined)
                 allKeysPressedArrayCombinedApp.append(keyPressedArrayCombined)
                 indexAppendCounter++;
                 println("key added")
@@ -233,68 +186,13 @@ class ViewController: UIViewController {
         
         
         if inputfieldlength3 > 0 && curr_text < countElements(texts){
-            
-            
-//            //BARIS EDITS
-//            
-//            var nextPressedIndex = [Int]();
-//            //Function to get the index of the array for gyro and accelerometer instance at the click
-//            var accelerometerIndex = sensorArrayAccelerometer.count
-//            var gyroIndex = sensorArrayGyro.count
-//            nextPressedIndex.append(accelerometerIndex)
-//            nextPressedIndex.append(gyroIndex)
-//            keyPressIndices.append(nextPressedIndex)
-//            sensorCounter++;
-//            
-//            sleep(1)
-//            
-//            var allKeysPressedArrayCombinedPage = Array<Array<Array<Array<Double>>>>() //Main array with all perpage includes Next
-//            
-//            for indexPair in keyPressIndices{
-//                //Aray for each key with both Accelerometer[0] and Gyro[1] arrays with instances
-//                var keyPressedArrayCombined = Array<Array<Array<Double>>>()
-//                
-//                var keyPressedArrayAccelerometer = Array<Array<Double>>()
-//                var keyPressedArrayGyro = Array<Array<Double>>()
-//                
-//                var acc_index = indexPair[0]
-//                var gyro_index = indexPair[1]
-//                
-//                if (indexPair[0] < 10){
-//                    acc_index = 10
-//                }
-//                if (indexPair[1] < 10){
-//                    gyro_index = 10
-//                }
-//                for var a_index = acc_index-10; a_index < acc_index+10; ++a_index {
-//                    keyPressedArrayAccelerometer.append(sensorArrayAccelerometer[a_index])
-//                }
-//                keyPressedArrayCombined.append(keyPressedArrayAccelerometer)
-//                
-//                for var g_index = gyro_index-10; g_index < gyro_index+10; ++g_index {
-//                    keyPressedArrayGyro.append(sensorArrayGyro[g_index])
-//                }
-//                keyPressedArrayCombined.append(keyPressedArrayGyro)
-//                
-//                allKeysPressedArrayCombinedPage.append(keyPressedArrayCombined)
-//                allKeysPressedArrayCombinedApp.append(keyPressedArrayCombined)
-//                indexAppendCounter++;
-//                println("key added")
-//            }
-//            
-//            //CLEAR the sensor arrays
-//            sensorArrayAccelerometer = Array<Array<Double>>()
-//            sensorArrayGyro = Array<Array<Double>>()
-//            keyPressIndices = Array<Array<Int>>()
-//            
-            
             textWindow.text = texts[curr_text]
             characters.append("NEXT")
             times.append(-1.0)
             curr_text += 1
         }
         else if curr_text >= countElements(texts)
-            && curr_question < countElements(questions){
+            && (curr_question < countElements(questions) && inputfieldlength3 > 0){
                 textWindow.text = questions[curr_question]
                 if curr_question >= 1 {
                     answers.append(inputfieldvalue.text)
@@ -400,7 +298,7 @@ class ViewController: UIViewController {
                 // send the request
                 NSURLConnection.sendSynchronousRequest(request, returningResponse: &response, error: &error)
                 println("REQUEST SENT!!!!!!!!!!!!!!!!!")
-                //exit(0)
+                exit(0)
                 
                 
                 
