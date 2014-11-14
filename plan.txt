@@ -14,6 +14,7 @@
     accelerations
     gyros
     email(string)
+    "data_source" : "iphone5" #for data collectors with iphone5
 }
 
 EXAMPLE:
